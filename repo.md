@@ -1,16 +1,15 @@
-# Security Findings Report
+INSTANCE_OS_LOGIN_DISABLED
 
-## DISK_CMEK_DISABLED
+Description:
+OS Login is disabled on Google Cloud Platform instances. OS Login provides a more secure and manageable way to handle SSH access to your instances using IAM permissions.
 
-### Description
-Disks on this VM are not encrypted with customer-managed encryption keys (CMEK). With CMEK, keys that you create and manage in Cloud KMS wrap the keys that Google Cloud uses to encrypt your data, giving you more control over access to your data.
+Remediation Steps:
+1. Go to the VM instances page in the Google Cloud console
+2. Select the instance related to the Security Health Analytics finding
+3. Click Edit
+4. Under the Security section, enable OS Login
+5. Click Save
+6. Restart the instance for changes to take effect
 
-### Risk Statements
-Without customer-managed encryption keys (CMEK) enabled on your Google Cloud disks, your organization lacks full control over the encryption keys protecting your sensitive data. This creates a significant security risk as you cannot independently manage key rotation, access, or revocation, potentially leading to unauthorized data access if Google's default encryption is compromised. In the event of a security incident, your ability to respond is limited since you cannot immediately revoke access by destroying the encryption keys. Additionally, this configuration may not meet compliance requirements for regulated industries that mandate customer control of encryption keys, potentially resulting in regulatory violations and penalties.
-
-### Remediation Steps
-1. Go to the Compute Engine disks page in the Google Cloud console
-2. In the list of disks, click the name of the disk indicated in the finding
-3. On the Manage disk page, click Delete
-4. Create a new disk with CMEK enabled following the instructions to "Encrypt a new persistent disk with your own keys"
-5. Note: CMEK incurs additional costs related to Cloud KMS
+Risk Statements:
+When OS Login is disabled on Google Cloud Platform instances, organizations face increased security risks related to SSH key management and user access control. Without OS Login, SSH keys are managed manually at the instance level, which can lead to inconsistent access policies, outdated keys remaining active, and potential unauthorized access if keys are compromised. Additionally, disabling OS Login bypasses centralized IAM controls, making it difficult to enforce the principle of least privilege and maintain comprehensive audit trails of user access to compute instances. This configuration also complicates compliance with security standards that require centralized authentication and authorization mechanisms for cloud resources.
