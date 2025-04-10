@@ -58,3 +58,23 @@ The AUTO_UPGRADE_DISABLED detector addresses several critical security risks ass
 
 4. Rationale for Enabling the Detector
 Enabling the AUTO_UPGRADE_DISABLED detector is essential for maintaining robust security and operational stability of GKE clusters. Organizations that fail to address this finding expose their infrastructure to known vulnerabilities in older Kubernetes versions, substantially increasing the risk of security breaches, data loss, and service disruptions. By enabling auto-upgrades, organizations ensure their nodes receive the latest security patches automatically, which significantly reduces the attack surface and strengthens the overall security posture of the cluster environment. From an operational perspective, auto-upgrades reduce the administrative burden associated with planning and implementing manual upgrades, freeing up valuable IT resources for other critical tasks. This configuration also helps organizations maintain compliance with security best practices and regulatory requirements that mandate regular patching of infrastructure components, potentially avoiding costly penalties and reputational damage associated with compliance violations.
+
+BINARY_AUTHORIZATION_DISABLED
+1. SHA Detector Description
+The BINARY_AUTHORIZATION_DISABLED detector identifies Google Kubernetes Engine (GKE) clusters that do not have Binary Authorization enabled. Binary Authorization is a critical security feature that enforces deployment-time security controls to ensure that only trusted container images are deployed in your GKE environment. This detector specifically checks the configuration of each GKE cluster to determine if this important security control is active. When Binary Authorization is disabled, containers can be deployed without verification of their origin or integrity, creating a significant security gap in your container deployment pipeline.
+
+2. Remediation Steps
+To remediate the BINARY_AUTHORIZATION_DISABLED finding, follow these steps:
+
+Go to the Kubernetes clusters page in the Google Cloud console.
+Select the cluster identified in the finding.
+Under Security, in the Binary Authorization row, click Edit.
+In the dialog, select Enable Binary Authorization.
+Click Save changes.
+Go to the Binary Authorization setup page.
+Ensure a policy that requires attestors is configured and the project default rule is not configured to "Allow all images."
+3. Security Risks Addressed
+Enabling Binary Authorization addresses several critical security risks in container environments. Without this control, organizations are vulnerable to supply chain attacks where unauthorized or compromised container images could be deployed into production environments. This creates opportunities for unauthorized code execution within the cluster, potentially leading to data breaches as attackers gain access to sensitive information. Organizations may also face compliance violations related to software supply chain security requirements in various regulatory frameworks. The absence of Binary Authorization increases the risk of privilege escalation attacks, where vulnerabilities in unverified images could be exploited to gain elevated privileges within the cluster. Additionally, deploying unverified containers may lead to service disruptions if those containers contain unstable or malicious code that affects the performance or availability of applications running in the cluster.
+
+4. Rationale for Enabling the Detector
+Enabling the BINARY_AUTHORIZATION_DISABLED detector is essential for organizations seeking to maintain robust security controls over their container deployments. This detector helps ensure that only verified, trusted container images are deployed in GKE clusters, significantly reducing the risk of supply chain attacks that could introduce malicious code into your environment. By enforcing Binary Authorization, organizations create a critical checkpoint that prevents unauthorized or compromised images from executing in production environments. This control is particularly important in regulated industries where software supply chain security is a compliance requirement. Organizations that fail to address this finding expose themselves to potential data breaches, service disruptions, and compliance violations that could result in financial penalties and reputational damage. The detector provides visibility into this security gap, allowing security teams to proactively enforce this important control across all GKE clusters in the environment.
