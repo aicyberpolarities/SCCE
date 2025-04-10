@@ -18,3 +18,26 @@ Here is the requested information in a clear table format:
 | **Confidential Computing Disabled**     | Without Confidential Computing, data processed in memory remains exposed to potential threats like memory scraping or in-memory data compromise. Sensitive workloads become susceptible to advanced attacks aimed at accessing runtime data. Lack of memory encryption during processing can lead to compliance failures for sensitive data handling. | Enabling this detector helps ensure sensitive data remains encrypted throughout processing. It promotes secure runtime environments, protecting against memory-based threats and meeting strict compliance requirements. |
 | **Disk CSEK Disabled**                  | Disks not encrypted with Customer-Supplied Encryption Keys (CSEK) rely solely on default encryption controls, potentially falling short of stringent security policies. Using default keys may introduce risks if those keys are compromised or mishandled. Without CSEK, organizations have reduced control over encryption key management, limiting incident response capabilities. | Activating this detector encourages robust encryption practices by prompting the use of CSEK. Enhanced control over encryption keys supports rigorous compliance mandates and effective incident response management. |
 | **Instance OS Login Disabled**          | Disabling OS Login increases security risks due to decentralized SSH key management, making it difficult to track key usage or revoke access promptly. Relying on metadata-based SSH configurations increases complexity and potential misconfigurations. Without OS Login, unauthorized access and lateral movement become more feasible for attackers. | Enabling this detector supports centralized SSH key management via IAM, providing efficient and secure access control. It simplifies auditing and revocation processes, significantly enhancing overall security posture. |
+
+
+1. SHA Detector Description
+The AUTO_REPAIR_DISABLED detector identifies Google Kubernetes Engine (GKE) clusters where the auto-repair feature is disabled. Auto-repair is a critical maintenance feature that ensures nodes in a cluster remain in a healthy, running state by periodically checking their health status. When auto-repair is enabled, the system automatically initiates a repair process if a node fails consecutive health checks. This detector flags clusters where this important availability and security feature has been turned off, potentially leaving clusters vulnerable to prolonged outages and security issues.
+
+2. Remediation Steps
+To remediate the AUTO_REPAIR_DISABLED finding, follow these steps:
+
+Go to the Kubernetes clusters page in the Google Cloud console.
+Click the Nodes tab.
+For each node pool:
+Click the name of the node pool to go to its detail page.
+Click Edit.
+Under Management, select Enable auto-repair.
+Click Save.
+These changes will enable the auto-repair functionality for your GKE node pools, allowing the system to automatically detect and repair unhealthy nodes.
+
+3. Security Risks Addressed
+Disabling auto-repair in GKE clusters introduces several significant security and operational risks. When auto-repair is disabled, unhealthy nodes can remain in a failed state for extended periods, causing prolonged service disruptions and degraded cluster performance. This situation requires increased manual intervention from operations teams, diverting resources from other critical tasks. More concerning from a security perspective, compromised nodes that might have been infiltrated by malicious actors can remain active within the cluster, potentially leading to lateral movement, data exfiltration, or other security breaches. Without automatic health checks and remediation, these compromised nodes might go undetected for longer periods, expanding the attack surface and increasing the potential impact of security incidents. The combination of these factors ultimately leads to reduced service availability, increased operational costs, and a weakened overall security posture.
+
+4. Rationale for Enabling the Detector
+Enabling the AUTO_REPAIR_DISABLED detector is crucial for maintaining the availability, security, and operational efficiency of GKE clusters. This detector helps organizations proactively identify clusters where this important security control has been disabled, allowing for timely remediation. By ensuring auto-repair is enabled, organizations can significantly reduce the manual overhead associated with node maintenance and health monitoring, allowing IT teams to focus on higher-value activities. From a security perspective, auto-repair helps minimize the window of opportunity for attackers by quickly identifying and replacing potentially compromised nodes. This capability is particularly important in environments with compliance requirements around availability and security monitoring. Organizations that enable this detector and address its findings can expect improved cluster reliability, reduced operational costs through automation, and an enhanced security posture through faster detection and remediation of node-level issues. The detector serves as an important guardrail against configuration drift that might otherwise leave critical infrastructure vulnerable.
+
